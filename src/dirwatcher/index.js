@@ -1,1 +1,1 @@
-export { DirWatcher } from './dirwatcher';
+export { DirWatcher } from "./dirwatcher";

@@ -1,23 +1,21 @@
 {
   "name": "node_project",
   "version": "1.0.0",
-  "description": "\"node.js mentoring program - week #1 assignment task\"",
+  "description": "node.js mentoring program",
   "main": "app.js",
   "scripts": {
-    "test": "",
-    "start": "babel src --out-dir dist && babel src/config/config.json --out-dir dist/config/ --copy-files && nodemon dist/app.js"
+    "start": "nodemon --exec babel-node src/app.js",
+    "test": ""
   },
   "author": "Vinay Itapu",
   "email": "vinay_itapu@epam.com",
   "license": "ISC",
   "devDependencies": {
+    "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
-    "@babel/preset-stage-2": "^7.0.0",
     "@babel/register": "^7.4.4",
     "nodemon": "^1.19.1"
-  },
-  "dependencies": {
-    "@babel/cli": "^7.4.4"
   }
 }

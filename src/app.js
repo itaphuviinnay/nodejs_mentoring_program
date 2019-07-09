@@ -1,9 +1,5 @@
-import name from './config/config'; 
-import {
-    User,
-    Product
-} from './models/index';
+import { Importer } from './importer';
+import { DirWatcher } from './dirwatcher';
 
-console.log(name);
-var user = new User();
-var product = new Product();
+let dirwatcher = new DirWatcher();
+new Importer(dirwatcher);

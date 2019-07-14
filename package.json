@@ -2,20 +2,10 @@
   "name": "node_project",
   "version": "1.0.0",
   "description": "node.js mentoring program",
-  "main": "app.js",
-  "scripts": {
-    "start": "nodemon --exec babel-node utils/streams.js",
-    "test": ""
-  },
   "author": "Vinay Itapu",
   "email": "vinay_itapu@epam.com",
   "license": "ISC",
-  "devDependencies": {
-    "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.5",
-    "@babel/node": "^7.4.5",
-    "@babel/preset-env": "^7.4.5",
-    "@babel/register": "^7.4.4",
-    "nodemon": "^1.19.1"
+  "dependencies": {
+    "concat": "^1.0.3"
   }
 }

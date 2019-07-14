@@ -1,0 +1,1 @@
+console.log('Streams JS is loaded');

@@ -6,6 +6,7 @@
   "email": "vinay_itapu@epam.com",
   "license": "ISC",
   "dependencies": {
-    "concat": "^1.0.3"
+    "commander": "^2.20.0",
+    "through2": "^2.0.3"
   }
 }

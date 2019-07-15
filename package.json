@@ -7,8 +7,7 @@
   "license": "ISC",
   "dependencies": {
     "commander": "^2.20.0",
-    "concat": "^1.0.3",
-    "csvjson": "^5.1.0",
+    "esm": "^3.2.25",
     "through2": "^2.0.3"
   }
 }

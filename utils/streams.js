@@ -3,46 +3,41 @@
 const program = require("commander");
 const path = require("path");
 const fs = require("fs");
-const util = require("util");
-const stream = require("stream");
-const https = require("https");
 const csvjson = require("csvjson");
 const through2 = require("through2");
-const config = require("../config");
+const concat = require("concat");
 
-const readdir = util.promisify(fs.readdir);
-const isCSV = file => /\.csv$/.test(file);
-const isCSS = file => /\.css$/.test(file);
+const isFileCSV = fileName => /\.csv$/.test(fileName);
 
 function reverse() {
-  const transformer = through2(function(data, encode, callback) {
+  const transformer = through2(function(data, encode, callbackFn) {
     this.push(
       data
         .toString()
         .split("")
         .reverse()
-        .join("") + "\n"
+        .join("") + "\n\n"
     );
-    callback();
+    callbackFn();
   });
   console.log(
-    "Write down the strings to be reversed and press ENTER. To exit press CTRL+C"
+    "\nInput the strings to be reversed and press ENTER.\n\nTo exit press CTRL+C"
   );
   process.stdin.pipe(transformer).pipe(process.stdout);
 }
 
 function transform() {
-  const transformer = through2(function(data, encode, callback) {
+  const transformer = through2(function(data, encode, callbackFn) {
     this.push(data.toString().toUpperCase());
-    callback();
+    callbackFn();
   });
   console.log(
-    "Write down the strings to be transformed and press ENTER. To exit press CTRL+C"
+    "Input the strings to be transformed to uppercase and press ENTER.\n\nTo exit press CTRL+C"
   );
   process.stdin.pipe(transformer).pipe(process.stdout);
 }
 
-function OutputFile(filePath) {
+function outputFile(filePath) {
   fs.createReadStream(filePath)
     .on("error", error =>
       console.log(`An error occured while reading the file: ${error}`)
@@ -51,62 +46,70 @@ function OutputFile(filePath) {
 }
 
 function transformFile(filePath, mode) {
-  if (!isCSV(filePath)) {
-    throw new Error("Specified file should be a CSV");
+  if (!isFileCSV(filePath)) {
+    throw new Error("File provided should be a csv file");
   }
   const readStream = fs.createReadStream(filePath);
   const toObject = csvjson.stream.toObject();
   const stringify = csvjson.stream.stringify(" ");
 
-  const chosenOutput =
+  const outputType =
     mode === "stdout"
       ? process.stdout
       : fs.createWriteStream(filePath.replace(/csv$/, "json"));
 
   readStream
     .on("error", error =>
-      console.log(`An error occured while reading the file: ${error}`)
+      console.log(`An error occured while reading the file: \n ${error}`)
     )
     .pipe(toObject)
     .pipe(stringify)
-    .pipe(chosenOutput);
+    .pipe(outputType);
 }
 
-const promisifiedPipe = (readStream, writeStream) =>
-  new Promise((resolve, reject) => {
-    readStream.pipe(
-      writeStream,
-      { end: false }
-    );
-    readStream.on("end", () => resolve()).on("error", error => reject(error));
-  });
-
-async function bundleCSS(pathFolder) {
-  const assets = await readdir(pathFolder);
-  const externalCSS = https.get(config.externalCSS);
-  const bundle = fs.createWriteStream(path.join(pathFolder, "bundle.css"));
-  bundle.on("error", error =>
-    console.log("An error occured while writing file")
-  );
-  const assetsArray = assets
-    .filter(isCSS)
-    .map(fName => fs.createReadStream(path.join(pathFolder, fName)));
-  const composedStreamsArray = [...assetsArray, externalCSS];
-  for (let streamArray of composedStreamsArray) {
-    await promisifiedPipe(streamArray, bundle);
+function bundleCSS(dirPath) {
+  const bundleFilePath = path.join(dirPath, "bundle.css");
+  if (fs.existsSync(bundleFilePath)) {
+    fs.unlinkSync(bundleFilePath);
   }
+  const cssFiles = fs
+    .readdirSync(dirPath)
+    .map(file => path.join(dirPath, file));
+  concat(cssFiles, bundleFilePath).then(() => {
+    fs.appendFileSync(
+      bundleFilePath,
+      `.ngmp18 {
+        background-color: #fff;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        position: relative;
+      }
+      .ngmp18__hw3 {
+        color: #333;
+      }
+      .ngmp18__hw3--t7 {
+        font-weight: bold;
+      }`,
+      "utf-8"
+    );
+  });
 }
 
 program
   .version("1.0.0")
   .option("-a, --action <required>", "Action to be executed")
   .option("-f, --file [optional]", "File to be processed")
-  .option("-p, --path [optional]", "Path with css files")
+  .option("-p, --path [optional]", "Folder path with css files")
   .parse(process.argv);
 
-const checkForArgument = (value, name) => {
-  if (!value) {
-    console.log(`Provide ${name} with --${name} option`);
+const isArgumentValid = (arg, value) => {
+  if (typeof arg !== "string") {
+    console.log(
+      `Provide a valid value for ${value} with --${value} option (or) -${value.charAt(
+        0
+      )} option`
+    );
     return false;
   }
   return true;
@@ -120,22 +123,24 @@ switch (program.action) {
     transform();
     break;
   case "outputFile":
-    if (!checkForArgument(program.file, "file")) break;
-    OutputFile(program.file);
+    if (!isArgumentValid(program.file, "file")) break;
+    outputFile(program.file);
     break;
   case "convertFromFile":
-    if (!checkForArgument(program.file, "file")) break;
+    if (!isArgumentValid(program.file, "file")) break;
     transformFile(program.file, "stdout");
     break;
   case "convertToFile":
-    if (!checkForArgument(program.file, "file")) break;
+    if (!isArgumentValid(program.file, "file")) break;
     transformFile(program.file, "toFile");
     break;
   case "cssBundler":
-    if (!checkForArgument(program.path, "path")) break;
-    console.log("cssBundler");
+    if (!isArgumentValid(program.path, "path")) break;
+    bundleCSS(program.path);
     break;
   default:
-    console.warn("\nIncorrect action passed. See available actions below");
+    console.warn(
+      "\nYou have passed an invalid action. Please pass one of the actions listed below "
+    );
     program.outputHelp();
 }

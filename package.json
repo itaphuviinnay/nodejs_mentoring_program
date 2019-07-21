@@ -4,18 +4,25 @@
   "description": "node.js mentoring program",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon --exec babel-node src/app.js",
+    "plain-text-server": "nodemon --exec babel-node src/servers/plain-text-server.js",
+    "html-server": "nodemon --exec babel-node src/servers/html-server.js",
+    "html-server-stream": "nodemon --exec babel-node src/servers/html-server.js --stream",
+    "json-server": "nodemon --exec babel-node src/servers/json-server.js",
     "test": ""
   },
   "author": "Vinay Itapu",
   "email": "vinay_itapu@epam.com",
   "license": "ISC",
   "devDependencies": {
-    "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.5",
-    "@babel/node": "^7.4.5",
-    "@babel/preset-env": "^7.4.5",
-    "@babel/register": "^7.4.4",
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "through2": "^3.0.1"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/node": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/register": "^7.5.5",
+    "commander": "^2.20.0"
   }
 }

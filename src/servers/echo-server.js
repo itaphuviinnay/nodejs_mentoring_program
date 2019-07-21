@@ -2,21 +2,6 @@ import http, { IncomingMessage, ServerResponse } from "http";
 
 const PORT_NUMBER = 3000;
 
-const product = {
-  id: 1,
-  name: "Supreme T-Shirt",
-  brand: "Supreme",
-  price: 99.99,
-  options: [
-    {
-      color: "blue"
-    },
-    {
-      size: "XL"
-    }
-  ]
-};
-
 /**
  * Function that is called each time the server gets a request
  * @param {IncomingMessage} request
@@ -24,8 +9,8 @@ const product = {
  */
 
 const requestHandler = (request, response) => {
-  response.writeHead(200, { "Content-Type": "application/json" });
-  response.end(JSON.stringify(product, null, 4));
+  response.writeHead(200, { "Content-Type": "text/html" });
+  request.pipe(response);
 };
 
 /**

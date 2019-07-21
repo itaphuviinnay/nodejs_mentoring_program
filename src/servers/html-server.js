@@ -10,8 +10,8 @@ const { htmlServerMeta, htmlStreamServerMeta } = config;
 
 /**
  * Function that is called each time the server gets a request
- * @param {IncomingMessage} request The request sent by the client
- * @param {ServerResponse} response The response sent back to the client
+ * @param {IncomingMessage} request
+ * @param {ServerResponse} response
  */
 
 const requestHandler = (request, response) => {

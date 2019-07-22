@@ -10,6 +10,27 @@ Node JS Mentoring Program Application
 
 #### Commands to run the application
 
-- **npm start**
-  - Uses **babel** to convert ECMAScript 2015+ code into a backwards compatible version of JavaScript in current and older browsers or environments
-  - **nodemon** starts will start a local server for your nodejs application which will monitor for any changes in your source code and automatically restarts the server
+- **List of scripts**
+
+  - `npm run plain-text-server`
+  - Starts a http server with `"Content-Type": "text/plain"` and returns `Hello World` as response
+
+  - `npm run html-server`
+  - Starts a http server with `"Content-Type": "text/html"` and returns html file content as response
+
+  - `npm run html-server-stream`
+  - Starts a http server with `"Content-Type": "text/html"` and returns html file content as response using streams
+
+  - `npm run json-server`
+  - Starts a http server with `"Content-Type": "application/json"` and returns a sample json response
+
+  - `npm run express-server`
+  - Starts an express application which responds to the below routes
+
+    | URL                       | Method | Action                               |
+    | ------------------------- | ------ | ------------------------------------ |
+    | /api/products             | GET    | Return ALL Products                  |
+    | /api/products/:id         | GET    | Return details of SINGLE Product     |
+    | /api/products/:id/reviews | GET    | Returns reviews for a SINGLE Product |
+    | /api/products             | POST   | Add NEW Product and returns it       |
+    | /api/users                | GET    | Returns ALL Users                    |

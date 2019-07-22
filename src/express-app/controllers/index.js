@@ -8,15 +8,11 @@ import products from "../models/products";
  * @param {Response} response
  *
  * @returns: List of the all the available products
- *
- * @returns: **No products available** if there are no existing products
  */
 function getAllProducts(request, response) {
+  console.log(response);
   response.header("Content-Type", "application/json");
-  if (!products.length) {
-    response.send("No products available");
-  }
-  response.send(JSON.stringify(products, null, 4));
+  response.send(JSON.stringify({ products }, null, 4));
 }
 
 /**
@@ -26,9 +22,9 @@ function getAllProducts(request, response) {
  * @param {Response} response
  */
 function addProduct(request, response) {
-  response.header("Content-Type", "text/plain");
+  response.header("Content-Type", "application/json");
   products.push(request.body);
-  response.send("Product added successfully");
+  response.send(request.body);
 }
 
 export default { getAllProducts, addProduct };

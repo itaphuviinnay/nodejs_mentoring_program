@@ -27,10 +27,11 @@ export const authByLogin = (req, res) => {
 };
 
 export const authByPassport = type => (req, res) => {
+  res.header("Content-Type", "application/json");
   passport.authenticate(type, (err, user, info) => {
     if (err) {
       return res.send(err);
     }
-    return res.send(info);
+    return res.send(JSON.stringify(info, null, 4));
   })(req, res);
 };

@@ -6,7 +6,7 @@ const authRouter = express.Router();
 
 authRouter.route("/").post(auth.authByLogin);
 
-authRouter.route("/local").post(passport.authenticate("local"), (req, res) => {
+authRouter.route("/login").post(passport.authenticate("local"), (req, res) => {
   return res.json({
     code: 200,
     message: "OK",

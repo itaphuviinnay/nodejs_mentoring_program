@@ -10,7 +10,6 @@ import products from "../models/products";
  * @returns: List of the all the available products
  */
 function getAllProducts(request, response) {
-  console.log(response);
   response.header("Content-Type", "application/json");
   response.send(JSON.stringify({ products }, null, 4));
 }

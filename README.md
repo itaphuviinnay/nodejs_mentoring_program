@@ -37,7 +37,7 @@ Node JS Mentoring Program Application
 
   - /api/auth - **POST (JWT)**
     **Headers** - ContentType - `application/json`
-    **Sample Payload**
+  - **Sample Payload**
 
     ```
         {
@@ -48,7 +48,7 @@ Node JS Mentoring Program Application
 
   - /api/auth/login - **POST (Local Passport Strategy)**
     **Headers** - ContentType - `application/json`
-    **Sample Payload**
+  - **Sample Payload**
     ```
         {
             "username": "sample_user_name",

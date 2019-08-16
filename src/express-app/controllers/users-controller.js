@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import users from "../models/users";
+import models from "../../models";
 
 /**
  * Function which returns the list of all the available users
@@ -11,7 +12,9 @@ import users from "../models/users";
  */
 function getAllUsers(request, response) {
   response.header("Content-Type", "application/json");
-  response.send(JSON.stringify({ users }, null, 4));
+  models.User.findAll({
+    attributes: ["id"]
+  }).then(res => response.json(res));
 }
 
 export default { getAllUsers };

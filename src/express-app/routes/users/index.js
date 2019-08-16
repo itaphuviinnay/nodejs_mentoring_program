@@ -4,7 +4,7 @@ import { isAuthenticated } from "../../middlewares/jwtTokenVerifier";
 
 const userRouter = express.Router();
 
-userRouter.use(isAuthenticated);
+// userRouter.use(isAuthenticated);
 
 userRouter.get("/", (request, response) => {
   userController.getAllUsers(request, response);

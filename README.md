@@ -55,7 +55,17 @@ Node JS Mentoring Program Application
             "password": "sample_pass_word"
         }
     ```
-  **Social Logins**
+    **Social Logins**
   - /api/auth/google
   - /api/auth/facebook
   - /api/auth/twitter
+
+**Running the application with Sequelize**
+
+- After running `npm install`, run the command `express-server-sequelize-seed`.
+- Running the above command does the following
+  - Creates a database `test_db` on the PostGreSQL instance on your local machine (It should be running before executing this command). Database credentials and info can be found in the **config.json** file
+  - Runs the migrations for creating the **Users, Products, Reviews** tables on the database
+  - Seed the tables with data
+- Now visiting the routes mentioned in the above section, will retrieve data from the database
+- Sample payloads for adding a new product can be found under `src/express-app/seeders/XXX-products.js`

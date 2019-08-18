@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
-import products from "../models/products";
-import reviews from "../models/reviews";
-
+import db from "../models";
 /**
  * Function which the returns details of a specific product.
  *
@@ -17,13 +15,12 @@ function getProductDetails(request, response) {
   response.header("Content-Type", "application/json");
   const productId = Number(request.params.id);
   if (!productId) response.send("Product Id is missing");
-  let searchedProduct = products.find(product => product.id === productId);
-  if (!searchedProduct)
-    searchedProduct = {
-      status: 404,
-      message: `No product found with product id ${productId}`
-    };
-  response.send(JSON.stringify(searchedProduct, null, 4));
+  return db.productModel
+    .findByPk(productId)
+    .then(product => response.json(product))
+    .catch(_ =>
+      response.status(404).send(`No product found with product id ${productId}`)
+    );
 }
 
 /**
@@ -39,12 +36,18 @@ function getProductDetails(request, response) {
  */
 function getProductReviews(request, response) {
   response.header("Content-Type", "application/json");
-  const productId = Number(request.params.id);
-  if (!productId) response.send("Product Id is missing");
-  const searchedReviews = reviews.filter(
-    review => review.productId === productId
-  );
-  response.send(JSON.stringify({ reviews: searchedReviews }, null, 4));
+  const id = Number(request.params.id);
+  if (!id) response.send("Product Id is missing");
+  return db.reviewModel
+    .findAll({
+      where: {
+        productId: id
+      }
+    })
+    .then(reviews => response.json(reviews))
+    .catch(_ =>
+      response.status(400).send(`No product found with product id ${id}`)
+    );
 }
 
 export default { getProductDetails, getProductReviews };

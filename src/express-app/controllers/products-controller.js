@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import products from "../models/products";
+import db from "../models";
 
 /**
  * Function which returns the list of all the available products
@@ -11,7 +11,7 @@ import products from "../models/products";
  */
 function getAllProducts(request, response) {
   response.header("Content-Type", "application/json");
-  response.send(JSON.stringify({ products }, null, 4));
+  return db.productModel.findAll().then(products => response.json(products));
 }
 
 /**
@@ -22,8 +22,10 @@ function getAllProducts(request, response) {
  */
 function addProduct(request, response) {
   response.header("Content-Type", "application/json");
-  products.push(request.body);
-  response.send(request.body);
+  return db.productModel
+    .create(request.body)
+    .then(product => response.status(201).send(product))
+    .catch(error => response.status(400).send(error));
 }
 
 export default { getAllProducts, addProduct };

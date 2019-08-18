@@ -10,6 +10,10 @@
     "json-server": "nodemon --exec babel-node src/servers/json-server.js",
     "echo-server": "nodemon --exec babel-node src/servers/echo-server.js",
     "express-server": "nodemon --exec babel-node src/express-app/index.js",
+    "express-server-sequelize-seed": "npm run create-db && npm run run-migrations && npm run seed-data && npm run express-server",
+    "create-db": "npx sequelize-cli db:create",
+    "run-migrations": "npx sequelize-cli db:migrate",
+    "seed-data": "npx sequelize-cli db:seed:all",
     "test": ""
   },
   "author": "Vinay Itapu",
@@ -35,6 +39,7 @@
     "passport-local": "^1.0.0",
     "passport-twitter": "^1.0.4",
     "pg": "^7.12.1",
-    "sequelize": "^5.15.0"
+    "sequelize": "^5.15.0",
+    "sequelize-cli": "^5.5.0"
   }
 }

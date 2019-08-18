@@ -6,20 +6,17 @@ module.exports = {
       "Users",
       [
         {
-          firstName: "Vinay",
-          lastName: "Itapu",
+          name: "Jack",
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
-          firstName: "Vijay",
-          lastName: "Itapu",
+          name: "Jill",
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
-          firstName: "Siva",
-          lastName: "Rallabhandi",
+          name: "James",
           createdAt: new Date(),
           updatedAt: new Date()
         }

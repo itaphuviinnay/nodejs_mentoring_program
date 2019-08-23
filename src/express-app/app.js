@@ -4,8 +4,12 @@ import queryParser from "./middlewares/query-parser";
 import router from "./routes";
 import passport from "passport";
 import session from "express-session";
+import startDb from "./db";
 
 const app = express();
+
+startDb();
+
 app.use(cookieParser);
 app.use(queryParser);
 app.use(express.json());

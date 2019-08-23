@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
-import products from "../models/products";
-import reviews from "../models/reviews";
+import Product from "../models/product";
 
 /**
  * Function which the returns details of a specific product.
@@ -17,13 +16,15 @@ function getProductDetails(request, response) {
   response.header("Content-Type", "application/json");
   const productId = Number(request.params.id);
   if (!productId) response.send("Product Id is missing");
-  let searchedProduct = products.find(product => product.id === productId);
-  if (!searchedProduct)
-    searchedProduct = {
-      status: 404,
-      message: `No product found with product id ${productId}`
-    };
-  response.send(JSON.stringify(searchedProduct, null, 4));
+  Product.findOne({ id: productId }, { _id: 0, __v: 0 }, (err, product) => {
+    if (err)
+      return response.status(404).send({
+        status: 404,
+        err,
+        message: `No product found with product id ${productId}`
+      });
+    return response.json(product);
+  });
 }
 
 /**
@@ -41,10 +42,40 @@ function getProductReviews(request, response) {
   response.header("Content-Type", "application/json");
   const productId = Number(request.params.id);
   if (!productId) response.send("Product Id is missing");
-  const searchedReviews = reviews.filter(
-    review => review.productId === productId
-  );
-  response.send(JSON.stringify({ reviews: searchedReviews }, null, 4));
+  Product.findOne({ id: productId }, { _id: 0, __v: 0 }, (err, product) => {
+    if (err)
+      return response.status(500).send({
+        status: 500,
+        err,
+        message: "No reviews found for the given product id"
+      });
+    return response.json(product.reviews);
+  });
 }
 
-export default { getProductDetails, getProductReviews };
+/**
+ * Function which deletes a specific product.
+ *
+ * @param {Request} request
+ * @param {Response} response
+ *
+ *
+ */
+function deleteProduct(request, response) {
+  response.header("Content-Type", "application/json");
+  const productId = Number(request.params.id);
+  Product.deleteOne({ id: productId }, err => {
+    if (err)
+      return response.status(500).send({
+        status: 500,
+        message: "Failed to delete the product"
+      });
+    return response.json({
+      status: 200,
+      id: productId,
+      message: "Product deleted successfully"
+    });
+  });
+}
+
+export default { getProductDetails, getProductReviews, deleteProduct };

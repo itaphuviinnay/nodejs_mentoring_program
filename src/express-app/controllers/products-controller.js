@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import products from "../models/products";
+import Product from "../models/product";
 
 /**
  * Function which returns the list of all the available products
@@ -11,19 +11,44 @@ import products from "../models/products";
  */
 function getAllProducts(request, response) {
   response.header("Content-Type", "application/json");
-  response.send(JSON.stringify({ products }, null, 4));
+  Product.find({}, { _id: 0, __v: 0 }, (error, products) => {
+    if (error) {
+      return response.status(500).send({
+        status: 500,
+        message: error
+      });
+    }
+    return response.json(products);
+  });
 }
 
 /**
- * Function which adds a new product
+ * Function which adds a new product and returns it
  *
  * @param {Request} request
  * @param {Response} response
  */
 function addProduct(request, response) {
   response.header("Content-Type", "application/json");
-  products.push(request.body);
-  response.send(request.body);
+  const { name, brand, price, color, size } = request.body;
+  Product.create(
+    {
+      name,
+      brand,
+      price,
+      color,
+      size
+    },
+    (error, product) => {
+      if (error) {
+        return response.status(400).json({
+          status: 400,
+          message: error
+        });
+      }
+      return response.status(201).send(product);
+    }
+  );
 }
 
 export default { getAllProducts, addProduct };

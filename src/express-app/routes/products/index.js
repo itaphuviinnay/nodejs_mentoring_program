@@ -19,6 +19,10 @@ productsRouter.get("/:id", (request, response) => {
   productDetailsController.getProductDetails(request, response);
 });
 
+productsRouter.delete("/:id", (request, response) => {
+  productDetailsController.deleteProduct(request, response);
+});
+
 productsRouter.get("/:id/reviews", (request, response) => {
   productDetailsController.getProductReviews(request, response);
 });

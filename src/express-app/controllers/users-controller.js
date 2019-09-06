@@ -33,11 +33,11 @@ function getAllUsers(request, response) {
 function deleteUser(request, response) {
   response.header("Content-Type", "application/json");
   const userId = Number(request.params.id);
-  User.deleteOne({ id: userId }, (err, _) => {
-    if (err)
+  User.findOneAndDelete({ id: userId }, (_, user) => {
+    if (!user)
       return response.status(500).send({
         status: 500,
-        message: "Failed to delete the user"
+        message: "No user exists with the given user id"
       });
     return response.json({
       status: 200,

@@ -7,7 +7,7 @@ import Product from "../models/product";
  * @param {Request} request
  * @param {Response} response
  *
- * @returns: Details of the product whose Id matches with the given Id. An empty object is returned if no product is found
+ * @returns: Details of the product whose Id matches with the given Id. An error object is returned if no product is found
  *
  * @returns: **Product Id is missing** in case if product id was not found as a route parameter
  *
@@ -17,13 +17,13 @@ function getProductDetails(request, response) {
   const productId = Number(request.params.id);
   if (!productId) response.send("Product Id is missing");
   Product.findOne({ id: productId }, { _id: 0, __v: 0 }, (err, product) => {
-    if (err)
+    if (!product)
       return response.status(404).send({
         status: 404,
         err,
         message: `No product found with product id ${productId}`
       });
-    return response.json(product);
+    return response.send(JSON.stringify(product, null, 4));
   });
 }
 
@@ -43,13 +43,19 @@ function getProductReviews(request, response) {
   const productId = Number(request.params.id);
   if (!productId) response.send("Product Id is missing");
   Product.findOne({ id: productId }, { _id: 0, __v: 0 }, (err, product) => {
-    if (err)
+    if (!product)
       return response.status(500).send({
         status: 500,
         err,
         message: "No reviews found for the given product id"
       });
-    return response.json(product.reviews);
+    return response.send(
+      JSON.stringify(
+        { productId: productId, reviews: product.reviews },
+        null,
+        4
+      )
+    );
   });
 }
 
@@ -64,11 +70,11 @@ function getProductReviews(request, response) {
 function deleteProduct(request, response) {
   response.header("Content-Type", "application/json");
   const productId = Number(request.params.id);
-  Product.deleteOne({ id: productId }, err => {
-    if (err)
+  Product.findOneAndDelete({ id: productId }, (_, product) => {
+    if (!product)
       return response.status(500).send({
         status: 500,
-        message: "Failed to delete the product"
+        message: "No product exists with the given product id"
       });
     return response.json({
       status: 200,

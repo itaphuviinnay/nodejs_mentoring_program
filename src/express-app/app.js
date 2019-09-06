@@ -4,6 +4,8 @@ import queryParser from "./middlewares/query-parser";
 import router from "./routes";
 import passport from "passport";
 import session from "express-session";
+import swaggerUi from "swagger-ui-express";
+import swaggerDocument from "./swagger/swagger.json";
 import startDb from "./db";
 
 const app = express();
@@ -24,5 +26,6 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(router);
+app.use("/swagger-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 export default app;

@@ -4,7 +4,7 @@ import { isAuthenticated } from "../../middlewares/jwtTokenVerifier";
 
 const citiesRouter = express.Router();
 
-citiesRouter.use(isAuthenticated);
+// citiesRouter.use(isAuthenticated);
 
 citiesRouter.get("/", (request, response) => {
   citiesController.getAllCities(request, response);

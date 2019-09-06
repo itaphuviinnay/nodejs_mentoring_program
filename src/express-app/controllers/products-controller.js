@@ -18,7 +18,7 @@ function getAllProducts(request, response) {
         message: error
       });
     }
-    return response.json(products);
+    return response.send(JSON.stringify(products, null, 4));
   });
 }
 
@@ -30,12 +30,14 @@ function getAllProducts(request, response) {
  */
 function addProduct(request, response) {
   response.header("Content-Type", "application/json");
-  const { name, brand, price, color, size } = request.body;
+  const { id, name, brand, price, reviews, color, size } = request.body;
   Product.create(
     {
+      id,
       name,
       brand,
       price,
+      reviews,
       color,
       size
     },

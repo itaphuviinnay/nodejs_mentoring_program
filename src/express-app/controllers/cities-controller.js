@@ -41,11 +41,12 @@ function getAllCities(request, response) {
  * @param {Response} response
  *
  */
-function addCity(requset, response) {
+function addCity(request, response) {
   response.header("Content-Type", "application/json");
-  const { name, country, capital, location } = requset.body;
+  const { id, name, country, capital, location } = request.body;
   City.create(
     {
+      id,
       name,
       country,
       capital,
@@ -54,9 +55,14 @@ function addCity(requset, response) {
         long: location.long
       }
     },
-    (err, city) => {
-      if (err) return response.send(err);
-      return response.json(city);
+    (error, city) => {
+      if (error) {
+        return response.status(400).json({
+          status: 400,
+          error
+        });
+      }
+      return response.status(201).send(city);
     }
   );
 }
@@ -90,11 +96,11 @@ function updateCity(request, response) {
 function deleteCity(request, response) {
   response.header("Content-Type", "application/json");
   const cityId = Number(request.params.id);
-  City.deleteOne({ id: cityId }, err => {
-    if (err)
+  City.findOneAndDelete({ id: cityId }, (_, city) => {
+    if (!city)
       return response.status(500).send({
         status: 500,
-        message: "Failed to delete the city"
+        message: "No city exists with the given id"
       });
     return response.json({
       status: 200,

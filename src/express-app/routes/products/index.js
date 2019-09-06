@@ -5,7 +5,7 @@ import { isAuthenticated } from "../../middlewares/jwtTokenVerifier";
 
 const productsRouter = express.Router();
 
-productsRouter.use(isAuthenticated);
+// productsRouter.use(isAuthenticated);
 
 productsRouter.get("/", (request, response) => {
   productController.getAllProducts(request, response);

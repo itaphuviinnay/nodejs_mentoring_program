@@ -1,0 +1,898 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "NodeJS Mentoring Programm",
+    "version": "1.0.0",
+    "title": "NodeJS Mentoring Programm",
+    "contact": {
+      "email": "vinay_itapu@epam.com"
+    }
+  },
+  "tags": [
+    {
+      "name": "auth",
+      "description": "API for Auth routes"
+    },
+    {
+      "name": "users",
+      "description": "API for User routes"
+    },
+    {
+      "name": "cities",
+      "description": "API for City routes"
+    },
+    {
+      "name": "products",
+      "description": "API for Product routes"
+    }
+  ],
+  "paths": {
+    "/auth": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Basic authentication",
+        "description": "Sample auth route for basic authentication",
+        "operationId": "auth",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "auth data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Auth_Body"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response",
+            "schema": {
+              "$ref": "#/definitions/Auth_Success"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Auth_Error"
+            }
+          }
+        }
+      }
+    },
+    "/auth/local": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Authentication using Passport",
+        "description": "Sample auth route for basic authentication using Passport Local Strategy",
+        "operationId": "authLocal",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "auth data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Auth_Body"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response",
+            "schema": {
+              "$ref": "#/definitions/Auth_Success"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Auth_Error"
+            }
+          }
+        }
+      }
+    },
+    "/auth/twitter": {
+      "get": {
+        "tags": ["auth"],
+        "summary": "Twitter Authentication using Passport",
+        "description": "Sample auth route for twitter authentication using Passport Twitter Strategy",
+        "operationId": "authTwitter",
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Response",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "400": {
+            "description": "Error"
+          }
+        }
+      }
+    },
+    "/auth/facebook": {
+      "get": {
+        "tags": ["auth"],
+        "summary": "Facebook Authentication using Passport",
+        "description": "Sample auth route for facebook authentication using Passport Facebook Strategy",
+        "operationId": "authFacebook",
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Response",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "400": {
+            "description": "Error"
+          }
+        }
+      }
+    },
+    "/auth/google": {
+      "get": {
+        "tags": ["auth"],
+        "summary": "Google Authentication using Passport",
+        "description": "Sample auth route for google authentication using Passport Google Strategy",
+        "operationId": "authGoogle",
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Response",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "400": {
+            "description": "Error"
+          }
+        }
+      }
+    },
+    "/products": {
+      "x-swagger-router-controller": "products",
+      "get": {
+        "tags": ["products"],
+        "summary": "Get all products",
+        "description": "List of the all the available products",
+        "operationId": "getAllProducts",
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Product_Response"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["products"],
+        "summary": "Add product",
+        "description": "Add a new product",
+        "operationId": "createProduct",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Body for adding a new product",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Product_Body"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Product_Response"
+            }
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "x-swagger-router-controller": "products",
+      "get": {
+        "tags": ["products"],
+        "summary": "Get details of a specific product",
+        "description": "Details of the product whose Id matches with the given Id",
+        "operationId": "getProduct",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of a product",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response",
+            "schema": {
+              "$ref": "#/definitions/Product_Response"
+            }
+          },
+          "404": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Product_Details_Error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["products"],
+        "summary": "Delete Product",
+        "description": "Deletes a specific product",
+        "operationId": "deleteProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of a product",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number"
+                },
+                "id": {
+                  "type": "number"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "example": {
+                "status": 200,
+                "id": 3,
+                "message": "Product deleted successfully"
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "example": {
+                "status": 500,
+                "message": "No product exists with the given product id"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{id}/reviews": {
+      "x-swagger-router-controller": "products",
+      "get": {
+        "tags": ["products"],
+        "summary": "Get reviews for a specific product",
+        "description": "List of the all the reviews associated to a specific product",
+        "operationId": "getProductReviews",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of a product",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": ["Nice", "Good Fit"]
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number"
+                },
+                "err": {
+                  "type": "object"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "example": {
+                "status": 500,
+                "err": "Error",
+                "message": "No reviews found for the given product id"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cities": {
+      "x-swagger-router-controller": "cities",
+      "get": {
+        "tags": ["cities"],
+        "summary": "Get all cities",
+        "description": "Get the list of available cities",
+        "operationId": "getAllCities",
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/City_Response"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["cities"],
+        "summary": "Add city",
+        "description": "Add a new city ",
+        "operationId": "createCity",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "data for product",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/City_Body"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/City_Response"
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number"
+                },
+                "error": {
+                  "type": "object"
+                }
+              },
+              "example": {
+                "status": 400,
+                "error": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cities/random": {
+      "x-swagger-router-controller": "cities",
+      "get": {
+        "tags": ["cities"],
+        "summary": "Get a random city",
+        "description": "Returns a random city from the list of available cities",
+        "operationId": "getRandomCity",
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/City_Response"
+            }
+          }
+        }
+      }
+    },
+    "/cities/{id}": {
+      "x-swagger-router-controller": "cities",
+      "put": {
+        "tags": ["cities"],
+        "summary": "Update city information",
+        "description": "Updates an existing city",
+        "operationId": "updateCity",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of a city",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "data to update",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/City_Body"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["cities"],
+        "summary": "Delete city",
+        "description": "Deletes a specific city",
+        "operationId": "deleteCity",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of a city",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number"
+                },
+                "id": {
+                  "type": "number"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "example": {
+                "status": 200,
+                "id": 3,
+                "message": "City deleted successfully"
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "example": {
+                "status": 500,
+                "message": "No city exists with the given id"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "x-swagger-router-controller": "users",
+      "get": {
+        "tags": ["users"],
+        "summary": "Get all users",
+        "description": "Get list of all the available users",
+        "operationId": "getAllUsers",
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User_response"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "x-swagger-router-controller": "users",
+      "delete": {
+        "tags": ["users"],
+        "summary": "Delete user",
+        "description": "Deletes a specific user",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of a user",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number"
+                },
+                "id": {
+                  "type": "number"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "example": {
+                "status": 200,
+                "id": 3,
+                "message": "User deleted successfully"
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "example": {
+                "status": 500,
+                "message": "No user exists with the given user id"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Auth_Error": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      },
+      "example": "401-Unauthorized"
+    },
+    "Auth_Body": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "example": {
+        "username": "your_username",
+        "password": "your_password"
+      }
+    },
+    "Auth_Success": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "example": "200"
+        },
+        "messsage": {
+          "type": "string",
+          "example": "OK"
+        },
+        "data": {
+          "type": "object",
+          "properties": {}
+        },
+        "token": {
+          "type": "string"
+        }
+      },
+      "example": {
+        "code": "200",
+        "data": "{}",
+        "messsage": "OK",
+        "token": "token"
+      }
+    },
+    "Product_Body": {
+      "type": "object",
+      "required": ["id", "name", "brand", "price", "size"],
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "brand": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number"
+        },
+        "color": {
+          "type": "string"
+        },
+        "size": {
+          "type": "string"
+        },
+        "reviews": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "example": {
+        "id": 1,
+        "name": "T-shirt",
+        "brand": "Supreme",
+        "price": 99.99,
+        "color": "blue",
+        "size": "XL",
+        "reviews": ["Nice", "Good Looking"],
+        "createdAt": "2019-09-06T03:09:47.255Z",
+        "lastModifiedDate": "2019-09-06T03:09:47.255Z"
+      }
+    },
+    "Product_Response": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "brand": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number"
+        },
+        "color": {
+          "type": "string"
+        },
+        "size": {
+          "type": "string"
+        },
+        "reviews": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "properties": {}
+          }
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "lastModifiedDate": {
+          "type": "string"
+        }
+      },
+      "example": {
+        "id": 1,
+        "name": "T-shirt",
+        "brand": "Supreme",
+        "price": 99.99,
+        "color": "blue",
+        "size": "XL",
+        "reviews": ["Nice", "Good Looking"],
+        "createdAt": "2019-09-06T03:09:47.255Z",
+        "lastModifiedDate": "2019-09-06T03:09:47.255Z"
+      }
+    },
+    "Product_Details_Error": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "number"
+        },
+        "err": {
+          "type": "object"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "example": {
+        "status": 404,
+        "err": "Error",
+        "message": "No product found with product id {product_id}"
+      }
+    },
+    "Location": {
+      "type": "object",
+      "properties": {
+        "lat": {
+          "type": "number"
+        },
+        "long": {
+          "type": "number"
+        }
+      },
+      "example": {
+        "lat": 0.88888,
+        "long": 5.5533
+      }
+    },
+    "City_Body": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "capital": {
+          "type": "boolean",
+          "default": false
+        },
+        "location": {
+          "$ref": "#/definitions/Location"
+        }
+      },
+      "example": {
+        "id": 1,
+        "name": "name",
+        "country": "country",
+        "capital": false,
+        "location": {
+          "lat": 0.99999,
+          "long": 4.44444
+        }
+      }
+    },
+    "City_Response": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "capital": {
+          "type": "boolean",
+          "default": false
+        },
+        "location": {
+          "$ref": "#/definitions/Location"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "lastModifiedDate": {
+          "type": "string"
+        }
+      },
+      "example": {
+        "id": 1,
+        "name": "Brest",
+        "country": "Belarus",
+        "capital": false,
+        "location": {
+          "lat": 52.0976,
+          "long": 23.734
+        },
+        "createdAt": "2019-09-06T03:58:27.499Z",
+        "lastModifiedDate": "2019-09-06T03:58:27.499Z"
+      }
+    },
+    "User_response": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "lastModifiedDate": {
+          "type": "string"
+        }
+      },
+      "example": {
+        "id": 1,
+        "name": "Jack",
+        "createdAt": "2019-09-06T04:08:29.817Z",
+        "lastModifiedDate": "2019-09-06T04:08:29.817Z"
+      }
+    }
+  },
+  "host": "localhost:8081",
+  "basePath": "/api",
+  "schemes": ["http"]
+}

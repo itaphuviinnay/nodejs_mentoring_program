@@ -42,7 +42,7 @@ Node JS Mentoring Program Application
     | /api/cities/:id           | PUT    | Updates a SINGLE City                |
     | /api/cities/:id           | DELETE | Deletes a SINGLE City                |
 
-**Running the application with Sequelize**
+**Running the application with MongoDB**
 
 - After running `npm install`, run the command `npm run express-server`.
 - It starts the express server which automatically connects to the cloud mongoDB instance with seed data for products, user and cities

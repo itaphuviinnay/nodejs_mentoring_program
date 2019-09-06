@@ -42,9 +42,17 @@ Node JS Mentoring Program Application
     | /api/cities/:id           | PUT    | Updates a SINGLE City                |
     | /api/cities/:id           | DELETE | Deletes a SINGLE City                |
 
-**Running the application with Sequelize**
+**Running the application with MongoDB**
 
 - After running `npm install`, run the command `npm run express-server`.
 - It starts the express server which automatically connects to the cloud mongoDB instance with seed data for products, user and cities
 - Now visiting the routes mentioned in the above section, will retrieve data from the database
 - Sample payloads can be found under `src/express-app/db/` directory
+
+**View Swagger Documentation**
+
+- After running `npm install`, run the command `npm run express-server`.
+- Navigate to `http://localhost:8081/swagger-docs` to open the swagger documentation
+- It has the necessary information regarding all the routes in the application
+- To test a route, click on it, pass any required parameters and hit **Try it out** to see it in action
+- All the responses for routes in the documentation are fetched from the MongoDB database
